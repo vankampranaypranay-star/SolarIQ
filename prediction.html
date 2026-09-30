@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SolarIQ AI Prediction</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo-area">
+        <img src="assets/SolarIQ.png" class="logo-img">
+        <span class="logo-text">SolarIQ AI</span>
+    </div>
+    <div class="nav-right">
+        <a href="/index.html" class="nav-btn">Home</a>
+        <a href="/dashboard.html" class="nav-btn">Dashboard</a>
+        <a href="/logout" class="nav-btn">Logout</a>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="card">
+        <h3>Tomorrow's Predicted Energy</h3>
+        <h1 id="predictedEnergy">Loading...</h1>
+        <p>kWh</p>
+    </div>
+
+    <div class="card">
+        <h3>Weather Forecast</h3>
+        <h1 id="weather">Loading...</h1>
+    </div>
+
+    <div class="card">
+        <h3>System Efficiency</h3>
+        <h1 id="efficiency">Loading...</h1>
+    </div>
+
+    <div class="card">
+        <h3>Smart Recommendation</h3>
+        <p id="recommendation">Analyzing...</p>
+    </div>
+
+</div>
+
+<script>
+async function loadPrediction() {
+    try {
+        const res = await fetch("/api/predict");
+
+        if (!res.ok) {
+            throw new Error("API not responding");
+        }
+
+        const data = await res.json();
+
+        console.log("Prediction API:", data);
+
+        // Safety check
+        if (!data) {
+            throw new Error("No data received");
+        }
+
+        // Energy
+        document.getElementById("predictedEnergy").innerText =
+            data.predictedEnergy ? data.predictedEnergy + " kWh" : "N/A";
+
+        // Weather
+        document.getElementById("weather").innerText =
+            data.weather ? data.weather : "N/A";
+
+        // Efficiency
+        document.getElementById("efficiency").innerText =
+            data.predictedEfficiency ? data.predictedEfficiency : "N/A";
+
+        // Recommendation Logic
+        if (data.weather === "Rainy") {
+            document.getElementById("recommendation").innerText =
+                "🌧 Rain expected. Solar generation will reduce.";
+        }
+        else if (data.weather === "Cloudy") {
+            document.getElementById("recommendation").innerText =
+                "☁ Moderate production expected due to cloud cover.";
+        }
+        else if (data.weather === "Sunny") {
+            document.getElementById("recommendation").innerText =
+                "🌞 Excellent solar conditions expected.";
+        }
+        else {
+            document.getElementById("recommendation").innerText =
+                "Weather data unavailable.";
+        }
+
+    } catch (err) {
+        console.error("Prediction Error:", err);
+        document.getElementById("recommendation").innerText =
+            "⚠ Unable to load prediction data.";
+    }
+}
+
+loadPrediction();
+</script>
+
+</body>
+</html>

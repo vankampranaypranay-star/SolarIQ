@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolarIQ Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="logo-area">
+        <img src="assets/SolarIQ.png" class="logo-img">
+        <span class="logo-text">SolarIQ</span>
+    </div>
+    <div class="nav-links">
+        <a href="index.html" class="nav-btn">Home</a>
+        <a href="prediction.html" class="nav-btn">Prediction</a>
+        <a href="/logout" class="nav-btn">Logout</a>
+    </div>
+</div>
+
+<!-- FAULT ALERT -->
+<div id="alertBox" class="alert-box"></div>
+
+<div class="container">
+
+    <!-- ENERGY -->
+    <div class="card clickable" onclick="toggleDetails('energyDetails')">
+        <h3>Energy Generated</h3>
+        <h1 id="energy">0</h1>
+        <p>kWh</p>
+        <div class="details" id="energyDetails"></div>
+    </div>
+
+    <!-- CO2 -->
+    <div class="card clickable" onclick="toggleDetails('co2Details')">
+        <h3>CO₂ Saved</h3>
+        <h1 id="co2">0</h1>
+        <p>kg</p>
+        <div class="details" id="co2Details"></div>
+    </div>
+
+    <!-- MONEY -->
+    <div class="card clickable" onclick="toggleDetails('moneyDetails')">
+        <h3>Money Saved</h3>
+        <h1 id="money">0</h1>
+        <p>₹</p>
+        <div class="details" id="moneyDetails"></div>
+    </div>
+
+    <!-- VOLTAGE -->
+    <div class="card">
+        <h3>Live Voltage</h3>
+        <h1 id="voltage">0</h1>
+        <p>Volts</p>
+    </div>
+
+    <!-- TEMPERATURE -->
+    <div class="card">
+        <h3>Panel Temperature</h3>
+        <h1 id="temperature">0</h1>
+        <p>°C</p>
+    </div>
+
+    <!-- EFFICIENCY -->
+    <div class="card clickable" onclick="toggleDetails('efficiencyDetails')">
+        <h3>System Efficiency</h3>
+        <h1 id="efficiency">0</h1>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="efficiencyBar"></div>
+        </div>
+
+        <p>(0 - 1)</p>
+        <div class="details" id="efficiencyDetails"></div>
+    </div>
+
+    <!-- HEALTH -->
+    <div class="card clickable" onclick="toggleDetails('healthDetails')">
+        <h3>System Health</h3>
+        <h2 id="healthMeter">Healthy</h2>
+        <div class="details" id="healthDetails"></div>
+    </div>
+
+    <!-- WEEKLY CHART -->
+    <div class="card">
+        <h3>Weekly Energy Trend</h3>
+        <canvas id="energyChart"></canvas>
+    </div>
+
+    <!-- HISTORICAL CHART -->
+    <div class="card">
+        <h3>Historical Energy (Last 20 Records)</h3>
+        <canvas id="historyChart"></canvas>
+    </div>
+
+</div>
+
+<script src="js/dashboard.js"></script>
+<!-- FOOTER -->
+<footer class="dashboard-footer">
+    <div class="footer-content">
+        <p>
+            © 2026 SolarIQ | Smart Solar Monitoring & AI Intelligence Platform
+        </p>
+
+        <div class="full-centre">
+            <div class="disclaimer">
+            ⚠️ Note: Current values are simulated for demonstration purposes. 
+            Real-time data will be fetched directly from solar panels / inverter 
+            hardware when integrated with live IoT systems.
+        </div>
+    </div>
+    </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolarIQ Login</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="hero">
+
+    <div class="card" style="width:360px; text-align:center;">
+
+        <img src="assets/SolarIQ.png" style="height:70px; margin-bottom:15px;">
+        
+        <h2>Welcome to SolarIQ</h2>
+
+        <p style="font-size:14px; opacity:0.8;">
+            AI-Powered Solar Monitoring & Energy Intelligence Platform
+        </p>
+
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+
+        <button type="button" onclick="login()">Login</button>
+
+        <p id="message" style="color:red; margin-top:10px;"></p>
+
+        <!-- Register Section -->
+        <div id="registerSection" style="display:none; margin-top:15px;">
+            <p style="font-size:13px;">User not found. Create new account?</p>
+            <button onclick="register()">Register</button>
+        </div>
+
+        <hr style="margin:20px 0; opacity:0.2;">
+
+        <p style="font-size:13px;">
+            🔆 Monitor Energy Production<br>
+            🌦 Predict Tomorrow's Solar Output<br>
+            🌍 Reduce Carbon Footprint
+        </p>
+
+    </div>
+
+</div>
+
+<script>
+async function login() {
+
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    const response = await fetch("/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password })
+    });
+
+    const data = await response.json();
+
+    console.log("Login Response:", data); // DEBUG
+
+    if (data.message === "LOGIN_SUCCESS") {
+        window.location.href = "/dashboard.html";
+    } 
+    else if (data.message === "User not found") {
+        document.getElementById("message").innerText = "User not found.";
+        document.getElementById("registerSection").style.display = "block";
+    } 
+    else {
+        document.getElementById("message").innerText = data.message;
+        document.getElementById("registerSection").style.display = "none";
+    }
+}
+
+async function register() {
+
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    const response = await fetch("/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" }, 
+        body: JSON.stringify({ username, password })
+    });
+
+    const data = await response.json();
+
+    console.log("Register Response:", data); // DEBUG
+
+    if (data.message === "REGISTER_SUCCESS") {
+        document.getElementById("message").innerText = 
+            "Registration successful. Please login.";
+        document.getElementById("registerSection").style.display = "none";
+    } else {
+        document.getElementById("message").innerText = data.message;
+    }
+}
+</script>
+</body>
+</html>
